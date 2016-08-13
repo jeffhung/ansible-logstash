@@ -1,0 +1,62 @@
+---
+
+- block:
+
+  - name: Add logstash APT key
+    apt_key:
+      state: present
+      url: "https://packages.elastic.co/GPG-KEY-elasticsearch"
+    when: ansible_pkg_mgr == 'apt'
+
+  - name: Add logstash APT repository
+    apt_repository:
+      state: present
+      repo: "deb https://packages.elastic.co/logstash/{{ logstash_version }}.3/debian stable main"
+# added in ansible 2.1
+#     filename: "logstash-{{ logstash_version }}"
+    when: ansible_pkg_mgr == 'apt'
+
+  - name: Ensure logstash is installed
+    apt:  state=present pkg=logstash
+    when: ansible_pkg_mgr == 'apt'
+
+  # --------------------------------------------------------------------------
+
+  - name: Ensure libselinux-python is installed
+    yum:  state=present pkg=libselinux-python
+    when: "ansible_os_family == 'RedHat'"
+
+  - name: Add logstash RPM key
+    rpm_key:
+      state: present
+      key: "https://packages.elastic.co/GPG-KEY-elasticsearch"
+    when: ansible_pkg_mgr == 'yum'
+
+  - name: Add logstash YUM repository
+    template:
+      src: logstash.repo.j2
+      dest: "/etc/yum.repos.d/logstash.repo"
+    when: ansible_pkg_mgr == 'yum'
+
+# added in ansible 2.1
+# - name: Add logstash YUM repository
+#   yum_repository:
+#     state: present
+#     name: "logstash-{{ logstash_version }}"
+#     description: "Logstash repository for {{ logstash_version }}.x packages"
+#     baseurl: "https://packages.elastic.co/logstash/{{ logstash_version }}/centos"
+#     gpgkey: "https://packages.elastic.co/GPG-KEY-elasticsearch"
+#     gpgcheck: yes
+#     enabled: yes
+#   when: ansible_pkg_mgr == 'yum'
+
+  - name: Ensure logstash is installed
+    yum:  state=present pkg=logstash
+    when: ansible_pkg_mgr == 'yum'
+
+  become: yes
+
+- name: Start logstash when boot
+  service: state=started name=logstash
+  become: yes
+

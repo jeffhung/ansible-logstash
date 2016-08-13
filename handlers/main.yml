@@ -1,0 +1,5 @@
+---
+- name: restart logstash
+  service: state=restarted name=logstash
+  become: yes
+
