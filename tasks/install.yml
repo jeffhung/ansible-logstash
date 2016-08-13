@@ -11,7 +11,7 @@
   - name: Add logstash APT repository
     apt_repository:
       state: present
-      repo: "deb https://packages.elastic.co/logstash/{{ logstash_version }}.3/debian stable main"
+      repo: "deb https://packages.elastic.co/logstash/{{ logstash_version }}/debian stable main"
 # added in ansible 2.1
 #     filename: "logstash-{{ logstash_version }}"
     when: ansible_pkg_mgr == 'apt'
