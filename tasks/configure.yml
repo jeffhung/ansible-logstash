@@ -1,0 +1,20 @@
+---
+
+- block:
+
+  - name: Install demo pipeline, twitter-to-elasticsearch
+    template:
+      src:                       twitter-to-elasticsearch.conf.j2
+      dest: /etc/logstash/conf.d/twitter-to-elasticsearch.conf
+    when: logstash_t2es_enabled
+    notify: restart logstash
+  
+  - name:  Remove demo pipeline, twitter-to-elasticsearch
+    file:
+      state: absent
+      path: /etc/logstash/conf.d/twitter-to-elasticsearch.conf
+    when: not logstash_t2es_enabled
+    notify: restart logstash
+
+  become: yes
+

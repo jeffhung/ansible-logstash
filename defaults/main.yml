@@ -2,3 +2,11 @@
 
 logstash_version: 2.3
 
+# Demo pipeline: twitter -> elasticsearch
+logstash_t2es_enabled: no
+logstash_t2es_twitter_consumer_key:       "my_consumer_key"
+logstash_t2es_twitter_consumer_secret:    "my_consumer_secret"
+logstash_t2es_twitter_oauth_token:        "my_oauth_token"
+logstash_t2es_twitter_oauth_token_secret: "my_oauth_token_secret"
+#logstash_t2es_twitter_keywords:           [ "pokemon" ]
+

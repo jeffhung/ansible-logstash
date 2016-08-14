@@ -2,3 +2,6 @@
 - name: Initiate logstash install process
   include: install.yml
 
+- name: Initiate logstash install process
+  include: configure.yml
+

@@ -1,0 +1,19 @@
+input {
+    twitter {
+        consumer_key       => "{{ logstash_t2es_twitter_consumer_key }}"
+        consumer_secret    => "{{ logstash_t2es_twitter_consumer_secret }}"
+        oauth_token        => "{{ logstash_t2es_twitter_oauth_token }}"
+        oauth_token_secret => "{{ logstash_t2es_twitter_oauth_token_secret }}"
+        keywords           => [ "pokemon" ]
+    }
+}
+filter {
+    mutate { add_field => { "[@metadata][test]" => "Hello" } }
+}
+output {
+#   stdout {}
+    stdout { codec => rubydebug { metadata => true } }
+    # jeffhung.20160813: need to use json codec or logstash will hang
+    elasticsearch {}
+}
+
